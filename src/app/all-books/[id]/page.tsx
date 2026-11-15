@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { BorrowBookDialog } from '@/components/BorrowBookDialog';
 
 interface Book {
     _id: string;
@@ -81,11 +82,11 @@ const BookDetailsPage = async({ params }: PageProps<"/all-books/[id]">) => {
                             type="button"
                             className="bg-orange-300 text-black hover:bg-orange-400"
                         >
-                            Borrow This Book
+                            <BorrowBookDialog/>
                         </Button>
                         <Link
                             href="/all-books"
-                            className="text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+                            className="text-black text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
                         >
                             Back to all books
                         </Link>
