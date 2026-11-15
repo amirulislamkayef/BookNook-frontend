@@ -16,7 +16,7 @@ interface Book {
     userEmail?: string;
 }
 
-const AllBooksPage = async() => {
+const AllBooksPage = async () => {
     const res = await fetch('http://localhost:8000/books')
     const data = await res.json()
     console.log(data);
@@ -32,6 +32,9 @@ const AllBooksPage = async() => {
     return (
         <div className="min-h-full bg-background">
             <div className="mx-auto max-w-7xl px-4 py-8">
+                <h2 className="my-8 text-center text-3xl font-bold tracking-tight text-foreground sm:text-5xl">
+                    Explore <span className="text-orange-400">All Books</span>
+                </h2>
                 <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                     {data.map((book: Book) => (
                         <article
@@ -59,7 +62,7 @@ const AllBooksPage = async() => {
                                 <p className="text-sm text-muted-foreground">by {book.author}</p>
                                 <Button
                                     className="mt-2 w-full bg-green-300 text-black hover:bg-green-400"
-                                    render={<Link href={`/books/${book._id}`} />}
+                                    render={<Link href={`/all-books/${book._id}`} />}
                                 >
                                     View Details
                                 </Button>
