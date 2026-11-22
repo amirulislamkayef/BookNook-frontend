@@ -6,6 +6,16 @@ import { useState } from "react"
 import { Menu, X } from "lucide-react"
 import { cn } from "cn"
 import { Button } from "@/components/ui/button"
+import { authClient } from "@/lib/auth-client"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import {
+  Popover,
+  PopoverContent,
+  PopoverDescription,
+  PopoverHeader,
+  PopoverTitle,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 
 const links = [
   { label: "Home", href: "/" },
@@ -17,6 +27,13 @@ const links = [
 
 export function Navbar() {
   const [open, setOpen] = useState(false)
+
+  const { data: session } = authClient.useSession()
+  const user = session?.user
+
+  const handleSignOut = () => {
+    authClient.signOut()
+  }
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80">
@@ -45,17 +62,37 @@ export function Navbar() {
 
         {/* login and signup */}
         <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            render={<Link href="/login" />}
-            onClick={() => setOpen(false)}
-          >
-            Login
-          </Button>
-          <Button size="sm" render={<Link href="/signup" />} onClick={() => setOpen(false)}>
-            Sign Up
-          </Button>
+
+          {
+            user ? <Popover>
+              <PopoverTrigger render={<Avatar>
+                <AvatarImage referrerPolicy="no-referrer" src={user?.image as string} />
+                <AvatarFallback>{user?.name.charAt(0)}</AvatarFallback>
+              </Avatar>
+              }>
+              </PopoverTrigger>
+              <PopoverContent>
+                <PopoverHeader>
+                  <PopoverTitle>{user?.name}</PopoverTitle>
+                  <PopoverDescription>{user?.email}</PopoverDescription>
+                  <PopoverDescription><Button onClick={handleSignOut} variant={'destructive'}>Sign Out</Button></PopoverDescription>
+                </PopoverHeader>
+              </PopoverContent>
+            </Popover> : <>
+
+              <Button
+                variant="outline"
+                size="sm"
+                render={<Link href="/login" />}
+                onClick={() => setOpen(false)}
+              >
+                Login
+              </Button>
+              <Button size="sm" render={<Link href="/signup" />} onClick={() => setOpen(false)}>
+                Sign Up
+              </Button>
+            </>
+          }
           <button
             type="button"
             className="inline-flex size-9 items-center justify-center rounded-md border border-border md:hidden"

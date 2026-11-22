@@ -1,4 +1,4 @@
-
+'use client'
 import { Button } from "@/components/ui/button"
 import {
     Card,
@@ -26,7 +26,7 @@ export default function LoginPage({
         e.preventDefault()
 
         const fromData = new FormData(e.target)
-        const user = Object.fromEntries(fromData.entries()) as { name: string, image: string, email: string, password: string }
+        const user = Object.fromEntries(fromData.entries()) as { email: string, password: string }
 
         const { data, error } = await authClient.signIn.email({
             ...user,
