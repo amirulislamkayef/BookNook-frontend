@@ -17,32 +17,42 @@ import {
 import { Input } from "@/components/ui/input"
 import { toast } from "@/components/ui/toast"
 import { authClient } from "@/lib/auth-client"
-import { redirect } from "next/navigation"
+import { useRouter } from "next/navigation"
 
 export default function LoginPage({
 }: React.ComponentProps<"div">) {
 
-    const handleLogin = async (e: React.SubmitEvent<HTMLElement>) => {
+    const router = useRouter()
+
+    const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        const fromData = new FormData(e.target)
-        const user = Object.fromEntries(fromData.entries()) as { email: string, password: string }
+        const formData = new FormData(e.currentTarget)
+        const user = Object.fromEntries(formData.entries()) as {
+            email: string;
+            password: string;
+        }
 
         const { data, error } = await authClient.signIn.email({
-            ...user,
+            email: user.email,
+            password: user.password,
         })
-        if (data) {
-            toast.add({
-                title: "Congratulations",
-                description: "Sign Up successfull",
-            })
-            redirect('/')
-        }
+
         if (error) {
             toast.add({
                 type: "error",
-                description: "Sign Up failed. please try again"
+                title: "Login Failed",
+                description: error.message || "Please try again",
             })
+            return
+        }
+        if (data) {
+            toast.add({
+                title: "Congratulations",
+                description: "Login successful",
+            })
+            router.push("/")
+            router.refresh()
         }
     }
 
@@ -76,6 +86,7 @@ export default function LoginPage({
                                 <FieldLabel htmlFor="email">Email</FieldLabel>
                                 <Input
                                     id="email"
+                                    name="email"
                                     type="email"
                                     placeholder="m@example.com"
                                     required
@@ -91,7 +102,7 @@ export default function LoginPage({
                                         Forgot your password?
                                     </a>
                                 </div>
-                                <Input id="password" type="password" required />
+                                <Input id="password" name="password" type="password" required />
                             </Field>
                             <Field>
                                 <Button type="submit">Login</Button>

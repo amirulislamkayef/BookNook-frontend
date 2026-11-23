@@ -27,9 +27,9 @@ const links = [
 
 export function Navbar() {
   const [open, setOpen] = useState(false)
-
   const { data: session } = authClient.useSession()
   const user = session?.user
+  const visibleLinks = user ? links : links.slice(0, 2)
 
   const handleSignOut = () => {
     authClient.signOut()
@@ -53,7 +53,7 @@ export function Navbar() {
         </Link>
 
         <nav className="hidden items-center gap-1 md:flex">
-          {links.map((link) => (
+          {visibleLinks.map((link) => (
             <NavLink key={link.href} href={link.href}>
               {link.label}
             </NavLink>

@@ -16,8 +16,8 @@ interface Book {
     userEmail?: string;
 }
 
-const BookDetailsPage = async({ params }: PageProps<"/all-books/[id]">) => {
-    const {id} = await params
+const BookDetailsPage = async ({ params }: PageProps<"/all-books/[id]">) => {
+    const { id } = await params
 
     const res = await fetch(`http://localhost:8000/book/${id}`)
     const data = await res.json()
@@ -78,12 +78,9 @@ const BookDetailsPage = async({ params }: PageProps<"/all-books/[id]">) => {
                     </div>
 
                     <div className="flex flex-wrap items-center gap-3">
-                        <Button
-                            type="button"
-                            className="bg-orange-300 text-black hover:bg-orange-400"
-                        >
-                            <BorrowBookDialog/>
-                        </Button>
+                        
+                        <BorrowBookDialog />
+
                         <Link
                             href="/all-books"
                             className="text-black text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
