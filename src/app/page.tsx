@@ -1,4 +1,5 @@
 import { Banner } from "@/components/Banner"
+import { CategorySection } from "@/components/CategorySection"
 import { HowBorrowingWorks } from "@/components/HowBorrowingWorks"
 import NewArrival from "@/components/NewArrival"
 
@@ -8,7 +9,9 @@ export default function Home() {
       <Banner />
       <NewArrival />
       <HowBorrowingWorks />
+      <CategorySection />
     </div>
   )
 }
+
 
