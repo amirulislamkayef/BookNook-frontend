@@ -14,11 +14,41 @@ import { Field, FieldGroup } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { authClient } from "@/lib/auth-client"
+import { Book } from "@/app/all-books/[id]/page"
+import { toast } from "@/components/ui/toast"
+import { redirect } from "next/navigation"
 
-export function BorrowBookDialog() {
+
+export function BorrowBookDialog({ book }: { book: Book }) {
     const { data: session } = authClient.useSession()
     const user = session?.user
 
+    const handleBorrow = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault()
+
+        const data = {
+            userName: user?.name,
+            email: user?.email,
+            image: user?.image,
+            ...book
+        }
+        const res = await fetch('http://localhost:8000/borrow', {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        const borrowData = await res.json()
+        console.log(borrowData);
+        if (data) {
+            toast.add({
+                title: `${book.title}`,
+                description: "Bowwor successfully",
+            })
+            redirect('/my-borrows')
+        }
+    }
     return (
         <Dialog>
             <form>
@@ -43,7 +73,7 @@ export function BorrowBookDialog() {
                     </FieldGroup>
                     <DialogFooter>
                         <DialogClose render={<Button variant="outline">Cancel</Button>} />
-                        <Button type="submit">Confirm Borrow</Button>
+                        <Button onClick={handleBorrow} type="submit">Confirm Borrow</Button>
                     </DialogFooter>
                 </DialogContent>
             </form>

@@ -1,10 +1,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { BorrowBookDialog } from '@/components/BorrowBookDialog';
 
-interface Book {
+export interface Book {
     _id: string;
     title: string;
     author: string;
@@ -78,8 +77,8 @@ const BookDetailsPage = async ({ params }: PageProps<"/all-books/[id]">) => {
                     </div>
 
                     <div className="flex flex-wrap items-center gap-3">
-                        
-                        <BorrowBookDialog />
+
+                        <BorrowBookDialog book={book}/>
 
                         <Link
                             href="/all-books"
