@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import { authClient } from "@/lib/auth-client"
 import {
     Select,
     SelectContent,
@@ -28,6 +29,9 @@ export default function AddBookPage() {
     const [category, setCategory] = React.useState<string>("Fiction")
     const [submitted, setSubmitted] = React.useState(false)
 
+    const { data: session } = authClient.useSession()
+    const user = session?.user
+
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault()
         const form = new FormData(event.currentTarget)
@@ -35,7 +39,7 @@ export default function AddBookPage() {
         form.set("category", category)
         setSubmitted(true)
         setCategory("Fiction")
-        
+
         const res = await fetch('http://localhost:8000/add-book', {
             method: "POST",
             headers: {
@@ -45,8 +49,6 @@ export default function AddBookPage() {
         })
         const data = await res.json()
         console.log(data);
-        
-
     }
 
     return (
@@ -101,7 +103,7 @@ export default function AddBookPage() {
 
                     <div className="flex flex-col gap-2">
                         <Label htmlFor="userName">User Name</Label>
-                        <Input id="userName" name="userName" defaultValue="Md Shahriyar Alam" />
+                        <Input id="userName" name="userName" defaultValue={user?.name} readOnly />
                     </div>
 
                     <div className="flex flex-col gap-2">
@@ -110,7 +112,8 @@ export default function AddBookPage() {
                             id="userEmail"
                             name="userEmail"
                             type="email"
-                            defaultValue="mdshahriyaramlam9@gmail.com"
+                            defaultValue={user?.email}
+                            readOnly
                         />
                     </div>
 

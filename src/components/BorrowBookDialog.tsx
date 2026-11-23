@@ -34,11 +34,11 @@ export function BorrowBookDialog() {
                     <FieldGroup>
                         <Field>
                             <Label htmlFor="username-1">Username</Label>
-                            <Input id="username-1" name="username" defaultValue={user?.name} />
+                            <Input id="username-1" name="username" defaultValue={user?.name} readOnly />
                         </Field>
                         <Field>
                             <Label htmlFor="email-1">Email</Label>
-                            <Input id="email-1" name="email" defaultValue={user?.email} />
+                            <Input id="email-1" name="email" defaultValue={user?.email} readOnly />
                         </Field>
                     </FieldGroup>
                     <DialogFooter>
