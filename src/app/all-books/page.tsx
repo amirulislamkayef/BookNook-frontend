@@ -17,7 +17,7 @@ interface Book {
 }
 
 const AllBooksPage = async () => {
-    const res = await fetch('http://localhost:8000/books')
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/books`)
     const data = await res.json()
     console.log(data);
 

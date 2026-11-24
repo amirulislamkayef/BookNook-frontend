@@ -40,7 +40,7 @@ export default function AddBookPage() {
         setSubmitted(true)
         setCategory("Fiction")
 
-        const res = await fetch('http://localhost:8000/add-book', {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/add-book`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

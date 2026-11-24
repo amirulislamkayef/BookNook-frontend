@@ -14,7 +14,7 @@ const ReturnBookButton = ({ borrowId, email }: Props) => {
 
     const handleReturn = async () => {
         const res = await fetch(
-            `http://localhost:8000/return/${borrowId}`,
+            `${process.env.NEXT_PUBLIC_API_URL}/return/${borrowId}`,
             {
                 method: "DELETE",
                 headers: {

@@ -54,7 +54,7 @@ const EditBookButton = ({ book }: { book: Book }) => {
         e.preventDefault();
 
         const res = await fetch(
-            `http://localhost:8000/update-book/${book._id}`,
+            `${process.env.NEXT_PUBLIC_API_URL}/update-book/${book._id}`,
             {
                 method: "PATCH",
                 headers: {

@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { BorrowBookDialog } from '@/components/BorrowBookDialog';
+import { getTokenFromServer } from '@/lib/getTokenFromServer';
 
 export interface Book {
     _id: string;
@@ -18,7 +19,13 @@ export interface Book {
 const BookDetailsPage = async ({ params }: PageProps<"/all-books/[id]">) => {
     const { id } = await params
 
-    const res = await fetch(`http://localhost:8000/book/${id}`)
+    const token = await getTokenFromServer()
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/book/${id}`,{
+        headers:{
+            authorization: `Bearer ${token}`,
+        }
+    })
     const data = await res.json()
 
     console.log(data);

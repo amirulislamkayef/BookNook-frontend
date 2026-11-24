@@ -19,7 +19,7 @@ const MyBooksPage = async () => {
         return <div>Please login first.</div>;
     }
     const res = await fetch(
-        `http://localhost:8000/my-books/${encodeURIComponent(user.email)}`
+        `${process.env.NEXT_PUBLIC_API_URL}/my-books/${encodeURIComponent(user.email)}`
     );
     const books = await res.json();
     console.log(books);
