@@ -2,10 +2,10 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 import type { Borrow } from "@/types/borrow";
+import ReturnBookButton from "@/components/ReturnBookButton";
 
 const MyBorrowsPage = async () => {
     const session = await auth.api.getSession({
@@ -15,7 +15,7 @@ const MyBorrowsPage = async () => {
 
     const res = await fetch(`http://localhost:8000/my-borrows/${user?.email}`)
     const borrows = await res.json()
-    
+
 
     return (
         <div className="min-h-screen bg-muted/20 px-4 py-10">
@@ -81,9 +81,10 @@ const MyBorrowsPage = async () => {
                                     <Separator className="my-4" />
 
                                     <div className="mt-4">
-                                        <Button className="w-full bg-orange-300 text-black hover:bg-orange-400">
-                                            Return Book
-                                        </Button>
+                                        <ReturnBookButton
+                                            borrowId={borrow._id}
+                                            email={user!.email}
+                                        />
                                     </div>
                                 </CardContent>
                             </Card>
