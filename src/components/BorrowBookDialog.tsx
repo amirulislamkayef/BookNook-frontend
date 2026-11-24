@@ -16,39 +16,56 @@ import { Label } from "@/components/ui/label"
 import { authClient } from "@/lib/auth-client"
 import { Book } from "@/app/all-books/[id]/page"
 import { toast } from "@/components/ui/toast"
-import { redirect } from "next/navigation"
+import { useRouter } from "next/navigation";
 
 
 export function BorrowBookDialog({ book }: { book: Book }) {
     const { data: session } = authClient.useSession()
     const user = session?.user
+    const router = useRouter();
 
     const handleBorrow = async (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault()
+        e.preventDefault();
 
-        const data = {
-            userName: user?.name,
-            email: user?.email,
-            image: user?.image,
-            ...book
+        if (!user?.email) {
+            toast.add({
+                title: "Login Required",
+                description: "Please login first.",
+            });
+            return;
         }
-        const res = await fetch('http://localhost:8000/borrow', {
+        const data = {
+            ...book,
+            userName: user.name,
+            email: user.email,
+            userimage: user.image,
+        };
+        const res = await fetch("http://localhost:8000/borrow", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json'
+                "Content-Type": "application/json",
             },
-            body: JSON.stringify(data)
-        })
-        const borrowData = await res.json()
-        console.log(borrowData);
-        if (data) {
+            body: JSON.stringify(data),
+        });
+
+        const result = await res.json();
+
+        if (!res.ok) {
             toast.add({
-                title: `${book.title}`,
-                description: "Bowwor successfully",
-            })
-            redirect('/my-borrows')
+                title: "Borrow Failed",
+                description: result.message || "Failed to borrow book.",
+            });
+            return;
         }
-    }
+        toast.add({
+            title: "Success",
+            description: "Book borrowed successfully!",
+        });
+
+        router.push("/my-borrows");
+        router.refresh();
+    };
+    
     return (
         <Dialog>
             <form>

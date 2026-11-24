@@ -8,7 +8,7 @@ export interface Book {
     title: string;
     author: string;
     category: string;
-    totalCopies: string | number;
+    totalCopies: number;
     image?: string;
     description?: string;
     userName?: string;
