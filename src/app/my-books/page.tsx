@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
+import DeleteBookButton from "@/components/DeleteBookButton ";
 
 const MyBooksPage = async () => {
     const session = await auth.api.getSession({
@@ -117,13 +118,7 @@ const MyBooksPage = async () => {
                                             Edit
                                         </Button>
 
-                                        <Button
-                                            variant="outline"
-                                            className="flex-1 border-red-500/30 text-red-600 hover:bg-red-50 hover:text-red-700"
-                                        >
-                                            <Trash2 className="mr-2 h-4 w-4" />
-                                            Delete
-                                        </Button>
+                                        <DeleteBookButton id={book._id} />
 
                                     </div>
                                 </CardContent>
