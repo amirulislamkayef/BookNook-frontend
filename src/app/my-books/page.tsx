@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 import DeleteBookButton from "@/components/DeleteBookButton ";
+import EditBookButton from "@/components/EditBookButton ";
 
 const MyBooksPage = async () => {
     const session = await auth.api.getSession({
@@ -109,14 +110,8 @@ const MyBooksPage = async () => {
 
                                     {/* Action Buttons */}
                                     <div className="mt-5 flex gap-3">
-
-                                        <Button
-                                            variant="outline"
-                                            className="flex-1 border-blue-500/30 text-blue-600 hover:bg-blue-50 hover:text-blue-700"
-                                        >
-                                            <Pencil className="mr-2 h-4 w-4" />
-                                            Edit
-                                        </Button>
+                                        
+                                        <EditBookButton book={book} />
 
                                         <DeleteBookButton id={book._id} />
 
